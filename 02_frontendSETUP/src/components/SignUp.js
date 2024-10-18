@@ -1,4 +1,4 @@
-import React, {useState} from 'react' 
+import React, {useState, useEffect} from 'react' 
 import {useNavigate} from 'react-router-dom'
 
 const SignUp = () => {
@@ -9,6 +9,15 @@ const SignUp = () => {
         email: "",
         password: ""
     });
+
+    // if user is already signed up and then if he tries to open signup page, he will navigate to home page
+    useEffect(() => {
+        const auth = localStorage.getItem('user');
+        if(auth)
+        {
+            navigate('/')
+        }
+    })
 
     function changeHandler(event)
     {
@@ -22,7 +31,7 @@ const SignUp = () => {
     {
         console.log(formData);
 
-        const result = await fetch('http://localhost:5000/register', {
+        let result = await fetch('http://localhost:5000/register', {
             method: 'post',
             body: JSON.stringify(formData),
             headers: {
@@ -30,7 +39,12 @@ const SignUp = () => {
             }
         })
 
-        console.log(await result.json())
+        result = await result.json();
+        
+        console.log(result)
+
+        // storing the user signed up data into local storage
+        localStorage.setItem("user", JSON.stringify(result))
 
         if(result) navigate('/');
     }
