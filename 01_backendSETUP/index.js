@@ -50,7 +50,7 @@ app.post('/login', async (req, resp) => {
     }
     else
     {
-        resp.send({result: 'no user found'})
+        resp.send({result: 'please input password and email both'})
     }
 
 })
