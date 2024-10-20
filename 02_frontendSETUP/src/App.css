@@ -89,3 +89,39 @@
   box-shadow: 0px 0px 10px 1px rgb(202, 236, 247);
 }
 /* Signup page end*/
+
+/* Login page starts */
+.login{
+  text-align: center;
+  max-width: 500px;
+  margin: auto;
+  background-color: #e9f6f9;
+  border-radius: 30px;
+  box-shadow: 0px 0px 20px 1px rgb(144, 220, 246);
+}
+
+.login .inputBox{
+  display: block;
+  margin: auto;
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 300px;
+  border: 1px solid hsl(191, 83%, 50%);
+}
+
+.login button{
+  margin: 10px;
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+  background-color: transparent;
+  font-size: large;
+  color: #23b7e0;
+  transition: all 0.2s ease-in-out;
+}
+
+.login button:hover{
+  background-color: #d9f0f7;
+  box-shadow: 0px 0px 10px 1px rgb(202, 236, 247);
+}
