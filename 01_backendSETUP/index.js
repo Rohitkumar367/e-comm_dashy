@@ -2,6 +2,7 @@
 // importing express module for routing purpose
 const express = require('express');
 const app = express();
+
 const cors = require('cors')
 
 // connected our mongodb with nodejs
@@ -21,18 +22,22 @@ app.get('/', (req, resp) => {
     resp.send("hello mr_d_droid")
 })
 
-app.post('/register', async (req, res) => {
-    let user = new User(req.body);// to send data to database we first formed the object of that data based on User model
-    let result = await user.save();// .save() is used to send the data, we can't use .select with .save so we manually delete the password in result variable
+app.post('/register', async (req, res) => 
+{
+    let user = new User(req.body);// to save data to database we first formed the object of our data based on User model.
+
+    let result = await user.save();// .save() is used to send the data, we can't use .select with .save, So we manually delete the password in result variable
+
     result = result.toObject();
     delete result.password;
+
+    console.log(result);
 
     res.send(result)
 })
 
-app.post('/login', async (req, resp) => {
-
-    console.log(req.body)
+app.post('/login', async (req, resp) => 
+{
 
     // to check user has sent both password and email
     if (req.body.password && req.body.email) 
@@ -41,6 +46,7 @@ app.post('/login', async (req, resp) => {
 
         if(user) 
         {
+            console.log(user);
             resp.send(user);
         }
         else 
