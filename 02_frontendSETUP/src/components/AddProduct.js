@@ -1,0 +1,84 @@
+import React, { useState } from 'react'
+
+const AddProduct = () => {
+
+    const[formData, setFormData] = useState({
+        name: "",
+        price: "",
+        category: "",
+        userId: "",
+        company: ""
+    })
+
+    function changeHandler(event)
+    {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value
+        })
+    }
+
+    async function submitHandler()
+    {
+        const auth = localStorage.getItem('user');
+        formData.userId = JSON.parse(auth)._id;
+        
+        console.log(formData);
+
+        let result = await fetch('http://localhost:5000/add-product', {
+            method: 'post',
+            body: JSON.stringify(formData),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        result = await result.json();
+
+        console.log(result);
+
+        // clear the form data
+        setFormData({
+            name: "",
+            price: "",
+            category: "",
+            userId: "",
+            company: ""
+        })
+    }
+
+    return (
+        <div className='product'>
+            <h1>Add Product</h1>
+
+            <input type='text' className='inputBox' placeholder='Enter product name'
+                name='name'
+                value={formData.name}
+                onChange={changeHandler}
+            />
+
+            <input type='text' className='inputBox' placeholder='Enter product price'
+                name='price'
+                value={formData.price}
+                onChange={changeHandler}
+            />
+
+            <input type='text' className='inputBox' placeholder='Enter product category'
+                name='category'
+                value={formData.category}
+                onChange={changeHandler}
+            />
+
+            <input type='text' className='inputBox' placeholder='Enter product company'
+                name='company'
+                value={formData.company}
+                onChange={changeHandler}
+            />
+
+            <button type='button' onClick={submitHandler}>Add Product</button>
+
+        </div>
+    )
+}
+
+export default AddProduct
