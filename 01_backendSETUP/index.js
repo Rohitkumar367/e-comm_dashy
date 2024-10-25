@@ -8,8 +8,9 @@ const cors = require('cors')
 // connected our mongodb with nodejs
 require('./db/config')
 
-// imported our user model
-const User = require('./db/User')
+// imported our models
+const User = require('./db/User');
+const Product = require('./db/Product')
 
 // resposible for converting the data into json format during post, put, delete requests
 app.use(express.json());
@@ -22,9 +23,9 @@ app.get('/', (req, resp) => {
     resp.send("hello mr_d_droid")
 })
 
-app.post('/register', async (req, res) => 
-{
-    let user = new User(req.body);// to save data to database we first formed the object of our data based on User model.
+app.post('/register', async (req, res) => {
+
+    let user = new User(req.body);// to save new user to database we first formed the object of our data based on User model.
 
     let result = await user.save();// .save() is used to send the data, we can't use .select with .save, So we manually delete the password in result variable
 
@@ -36,29 +37,34 @@ app.post('/register', async (req, res) =>
     res.send(result)
 })
 
-app.post('/login', async (req, resp) => 
-{
+app.post('/login', async (req, resp) => {
 
     // to check user has sent both password and email
-    if (req.body.password && req.body.email) 
-    {
+    if (req.body.password && req.body.email) {
         let user = await User.findOne(req.body).select("-password"); // findOne is used to find the data in database and .select("-password") used to fetch data without password
 
-        if(user) 
-        {
+        if (user) {
             console.log(user);
             resp.send(user);
         }
-        else 
-        {
+        else {
             resp.send({ result: 'no user found' })
         }
     }
-    else
-    {
-        resp.send({result: 'please input password and email both'})
+    else {
+        resp.send({ result: 'please input password and email both' })
     }
 
+})
+
+app.post('/add-product', async(req, resp) => {
+
+    let product = new Product(req.body);
+
+    let result = await product.save();
+
+    console.log(result);
+    resp.send(result);
 })
 
 app.listen(5000, () => {
