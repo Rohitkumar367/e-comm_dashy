@@ -9,5 +9,6 @@ const productSchema = new mongoose.Schema({
     company: String
 })
 
+// mongoose.model('table_name', schema)
 module.exports = mongoose.model('products', productSchema);
 

@@ -9,4 +9,6 @@ const userSchema = new mongoose.Schema(
     }
 );
 
+// mongoose.model('table_name', schema)
 module.exports = mongoose.model('users', userSchema);
+

@@ -1,12 +1,11 @@
 
 // importing express module for routing purpose
 const express = require('express');
-const app = express();
-
 const cors = require('cors')
-
-// connected our mongodb with nodejs
+// connected our mongodb with nodejs using mongoose
 require('./db/config')
+
+const app = express();
 
 // imported our models
 const User = require('./db/User');
@@ -25,10 +24,11 @@ app.get('/', (req, resp) => {
 
 app.post('/register', async (req, res) => {
 
-    let user = new User(req.body);// to save new user to database we first formed the object of our data based on User model.
+    let user = new User(req.body);// to save new user to database we first form the object of our data based on User model.
 
-    let result = await user.save();// .save() is used to send the data, we can't use .select with .save, So we manually delete the password in result variable
+    let result = await user.save();// .save() is used to send the data to database, we can't use .select with .save, So we manually delete the password in result variable
 
+    // .toObject converts the mongoose document into a plain object
     result = result.toObject();
     delete result.password;
 
@@ -64,6 +64,7 @@ app.post('/add-product', async(req, resp) => {
     let result = await product.save();
 
     console.log(result);
+    
     resp.send(result);
 })
 

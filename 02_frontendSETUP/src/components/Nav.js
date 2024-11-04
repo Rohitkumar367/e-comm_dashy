@@ -29,7 +29,9 @@ const Nav = () =>{
                 <li><Link to="/profile">Profile</Link></li>
 
                 {/* JSON.parse() converts json string into a javacript object */}
-                <li><Link to="/signup" onClick={logout}>LogOut ({JSON.parse(auth).name})</Link></li>
+                <li><Link to="/signup" onClick={logout}>
+                    LogOut ({JSON.parse(auth).name})
+                </Link></li>
 
             </ul>
             :
