@@ -15,6 +15,16 @@
   }
 }
 
+.invalid-input{
+  color: red;
+  display: flex;
+  width: fit-content;
+  margin-bottom: 10px;
+  margin-top: -12px;
+  font-size: 12px;
+  margin-left: 95px;
+}
+
 .nav-ul li a{
   color: white;
   padding: 5px;

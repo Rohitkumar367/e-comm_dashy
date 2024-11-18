@@ -10,6 +10,8 @@ const AddProduct = () => {
         company: ""
     })
 
+    const[error, setError] = useState(false);
+
     function changeHandler(event)
     {
         setFormData({
@@ -20,6 +22,14 @@ const AddProduct = () => {
 
     async function submitHandler()
     {
+        
+        if(!formData.name || !formData.price || !formData.category || !formData.company){
+            setError(true);
+            return false;
+        }
+        
+        console.log(formData)
+
         const auth = localStorage.getItem('user');
         formData.userId = JSON.parse(auth)._id;
         
@@ -58,24 +68,36 @@ const AddProduct = () => {
                 value={formData.name}
                 onChange={changeHandler}
             />
+            {error && !formData.name && 
+                <span className='invalid-input'>Enter valid name</span>
+            }
 
             <input type='text' className='inputBox' placeholder='Enter product price'
                 name='price'
                 value={formData.price}
                 onChange={changeHandler}
             />
+            {error && !formData.price && 
+                <span className='invalid-input'>Enter valid price</span>
+            }
 
             <input type='text' className='inputBox' placeholder='Enter product category'
                 name='category'
                 value={formData.category}
                 onChange={changeHandler}
             />
+            {error && !formData.category && 
+                <span className='invalid-input'>Enter valid category</span>
+            }
 
             <input type='text' className='inputBox' placeholder='Enter product company'
                 name='company'
                 value={formData.company}
                 onChange={changeHandler}
             />
+            {error && !formData.company && 
+                <span className='invalid-input'>Enter valid company</span>
+            }
 
             <button type='button' onClick={submitHandler}>Add Product</button>
 

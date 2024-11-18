@@ -57,6 +57,7 @@ app.post('/login', async (req, resp) => {
 
 })
 
+// similar to signup page
 app.post('/add-product', async(req, resp) => {
 
     let product = new Product(req.body);
