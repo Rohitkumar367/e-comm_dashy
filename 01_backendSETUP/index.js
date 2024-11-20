@@ -82,6 +82,11 @@ app.get("/products", async (req, resp)=>{
     }
 })
 
+app.delete('/product/:id', async (req, resp)=>{
+    const result = Product.deleteOne({_id: req.params.id});
+    resp.send(result)
+})
+
 app.listen(5000, () => {
     console.log('Backend Server is running at:-- http://localhost:5000')
 })
