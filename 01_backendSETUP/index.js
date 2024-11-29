@@ -2,16 +2,18 @@
 // importing express module for routing purpose
 const express = require('express');
 const cors = require('cors')
-// connected our mongodb with nodejs using mongoose
+const app = express();
+
+
+// connecting our database using mongoose
 require('./db/config')
 
-const app = express();
 
 // imported our models
 const User = require('./db/User');
 const Product = require('./db/Product')
 
-// resposible for converting the data into json format during post, put, delete requests
+// resposible for converting the data into json format during post, put, delete requests, without it the req.body would be a raw string
 app.use(express.json());
 
 // Allows resources from your Node.js server to be accessed by other domains or origins (e.g., from a frontend running on a different port or domain).
@@ -86,6 +88,9 @@ app.delete('/product/:id', async (req, resp)=>{
     const result = Product.deleteOne({_id: req.params.id});
     resp.send(result)
 })
+
+
+
 
 app.listen(5000, () => {
     console.log('Backend Server is running at:-- http://localhost:5000')
