@@ -1,28 +1,33 @@
 
 // importing express module for routing purpose
 const express = require('express');
-const cors = require('cors')
 const app = express();
 
+// Imprts CORS(cross-origin resource sharing) middleware, which allows your server to handle cross-origin requests (e.g., from a frontend running on a different port or domain).
+const cors = require('cors')
 
-// connecting our database using mongoose
+// connecting to the database server
 require('./db/config')
 
 
-// imported our models
+// imports User model to interact with the users collection
 const User = require('./db/User');
+
+// imports Product model to interact with the products collection
 const Product = require('./db/Product')
 
 // resposible for converting the data into json format during post, put, delete requests, without it the req.body would be a raw string
 app.use(express.json());
 
-// Allows resources from your Node.js server to be accessed by other domains or origins (e.g., from a frontend running on a different port or domain).
+
+//This allows your backend to handle requests from a different origin (e.g., a React front end running on a different server).
 app.use(cors())
 
 
 app.get('/', (req, resp) => {
     resp.send("hello mr_d_droid")
 })
+
 
 app.post('/register', async (req, res) => {
 
@@ -36,8 +41,10 @@ app.post('/register', async (req, res) => {
 
     console.log(result);
 
+    // sending result to client
     res.send(result)
 })
+
 
 app.post('/login', async (req, resp) => {
 
@@ -58,6 +65,7 @@ app.post('/login', async (req, resp) => {
     }
 
 })
+
 
 // similar to signup page
 app.post('/add-product', async(req, resp) => {
@@ -83,6 +91,7 @@ app.get("/products", async (req, resp)=>{
         resp.send({result: "No Products found"})
     }
 })
+
 
 app.delete('/product/:id', async (req, resp)=>{
     const result = Product.deleteOne({_id: req.params.id});

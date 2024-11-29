@@ -10,6 +10,14 @@ const SignUp = () => {
         password: ""
     });
 
+    function changeHandler(event)
+    {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value
+        })
+    }
+
     // if user is already signed up and then if he tries to open signup page, he will navigate to home page
     useEffect(() => {
         const auth = localStorage.getItem('user');
@@ -18,14 +26,6 @@ const SignUp = () => {
             navigate('/')
         }
     })
-
-    function changeHandler(event)
-    {
-        setFormData({
-            ...formData,
-            [event.target.name]: event.target.value
-        })
-    }
 
     async function submitHandler()
     {
