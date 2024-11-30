@@ -31,7 +31,7 @@ app.get('/', (req, resp) => {
 
 app.post('/register', async (req, res) => {
 
-    let user = new User(req.body);// to save data to database we first pass it to the User model so that the input matches to the defined User's schema, this prevent invalid data or any extra field from being stored in the database.
+    let user = new User(req.body);// to save new data to database we first pass it to the User model so that the input matches to the defined User's schema, this prevent invalid data or any extra field from being stored in the database.
 
     let result = await user.save();// .save() is used to save the new data to the database, we can't use .select with .save, So we manually delete the password in result variable
 
@@ -50,18 +50,18 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, resp) => {
 
     // to check user has sent both password and email
-    if (req.body.password && req.body.email) {
-        let user = await User.findOne(req.body).select("-password"); // findOne is used to find the data in database and .select("-password") used to fetch data without password
+    if(req.body.password && req.body.email){
+        let user = await User.findOne(req.body).select("-password"); // findOne is used to find the data in database and .select("-password") used to fetch data without password.
 
-        if (user) {
+        if(user){
             console.log(user);
             resp.send(user);
         }
-        else {
+        else{
             resp.send({ result: 'no user found' })
         }
     }
-    else {
+    else{
         resp.send({ result: 'please input password and email both' })
     }
 

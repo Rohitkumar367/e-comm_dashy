@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 
 const AddProduct = () => {
+    
+    const[error, setError] = useState(false);
 
     const[formData, setFormData] = useState({
         name: "",
@@ -10,7 +12,6 @@ const AddProduct = () => {
         company: ""
     })
 
-    const[error, setError] = useState(false);
 
     function changeHandler(event)
     {
@@ -22,14 +23,12 @@ const AddProduct = () => {
 
     async function submitHandler()
     {
-        
         if(!formData.name || !formData.price || !formData.category || !formData.company){
             setError(true);
             return false;
         }
-        
-        console.log(formData)
 
+        // assigning userID of formData because it has to be taken from the user loged in info from localStorage
         const auth = localStorage.getItem('user');
         formData.userId = JSON.parse(auth)._id;
         
@@ -55,6 +54,8 @@ const AddProduct = () => {
             userId: "",
             company: ""
         })
+
+        setError(false);
 
         window.alert("product added successfully")
     }

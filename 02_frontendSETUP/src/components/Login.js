@@ -10,6 +10,15 @@ const Login = () => {
         password: ""
     });
 
+    function changeHandler(event)
+    {
+        setFormData({
+            ...formData,
+            [event.target.name]: [event.target.value]
+        })
+    }
+
+
     // if user is already loged in and then if he tries to open login page, he will navigate to home page
     useEffect(() => {
         const auth = localStorage.getItem('user');
@@ -19,13 +28,6 @@ const Login = () => {
         }
     })
 
-    function changeHandler(event)
-    {
-        setFormData({
-            ...formData,
-            [event.target.name]: [event.target.value]
-        })
-    }
 
     async function submitHandler()
     {
