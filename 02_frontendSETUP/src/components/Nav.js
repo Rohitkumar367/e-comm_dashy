@@ -3,11 +3,11 @@ import {Link, useNavigate} from 'react-router-dom'
 import logo from '../assets/logo/e-comm_logo.png'
 
 const Nav = () =>{
+    const navigate = useNavigate();
 
     // getting user signed up detail
     const auth = localStorage.getItem('user');
 
-    const navigate = useNavigate();
 
     // if user clicks on logout, the localStorage gets cleard and the page navigate to signup page
     const logout = () => {

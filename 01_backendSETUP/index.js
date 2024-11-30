@@ -31,11 +31,12 @@ app.get('/', (req, resp) => {
 
 app.post('/register', async (req, res) => {
 
-    let user = new User(req.body);// to save new user to database we first form the object of our data based on User model.
+    let user = new User(req.body);// to save data to database we first pass it to the User model so that the input matches to the defined User's schema, this prevent invalid data or any extra field from being stored in the database.
 
-    let result = await user.save();// .save() is used to send the data to database, we can't use .select with .save, So we manually delete the password in result variable
+    let result = await user.save();// .save() is used to save the new data to the database, we can't use .select with .save, So we manually delete the password in result variable
 
-    // .toObject converts the mongoose document into a plain object
+    // .toObject converts the "mongoose document" into a plain javascript object.
+    // .json() is for sending a response, It doesn’t provide you with a new copy of the data to work with.
     result = result.toObject();
     delete result.password;
 

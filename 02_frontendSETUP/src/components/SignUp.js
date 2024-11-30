@@ -31,6 +31,8 @@ const SignUp = () => {
     {
         console.log(formData);
 
+        // POST request to the backend API(5000/register) using fetch API
+        // fetch() function, which is used to make an HTTP request from the client to the server
         let result = await fetch('http://localhost:5000/register', {
             method: 'post',
             body: JSON.stringify(formData),
@@ -39,11 +41,12 @@ const SignUp = () => {
             }
         })
 
+        // .json() takes the raw JSON string of result and converts it into javaScript object
         result = await result.json();
         
         console.log(result)
 
-        // storing the user signed up data into local storage
+        // storing the user signed up data into local storage in JSON-formatting string with key-value pair
         localStorage.setItem("user", JSON.stringify(result))
 
         if(result) navigate('/');

@@ -7,7 +7,8 @@ const PrivateComponent = () => {
     const auth = localStorage.getItem('user');
 
     return (
-        //Outlet is used to show the children component of PrivateComponent. If the user data is empty it means user has not signed up thus if user tries to open any other page, he will navigate to the signed up page
+        //Outlet is used to show the children component of PrivateComponent. 
+        // IN this case, if the user data is empty it means user has not signed up so if user tries to open any other page, he will navigate to the signed up page
         auth ? <Outlet/> : <Navigate to='/signup'/>
     )
 }
