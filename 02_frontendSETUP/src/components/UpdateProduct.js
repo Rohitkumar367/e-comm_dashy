@@ -29,6 +29,7 @@ const UpdateProduct = () => {
         getProductDetails();
     },[])
 
+    // first get request
     async function getProductDetails()
     {
         let result = await fetch(`http://localhost:5000/product/${params.id}`);
@@ -57,7 +58,7 @@ const UpdateProduct = () => {
     }
 
 
-    // now for updating data
+    // and now put req
     async function submitHandler()
     {
         if(!formData.name || !formData.price || !formData.category || !formData.company){

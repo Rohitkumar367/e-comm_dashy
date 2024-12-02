@@ -55,9 +55,7 @@ const AddProduct = () => {
             userId: "",
             company: ""
         })
-
         setError(false);
-
         window.alert("product added successfully")
     }
 
