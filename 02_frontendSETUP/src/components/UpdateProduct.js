@@ -1,7 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 
-const AddProduct = () => {
-    
+const UpdateProduct = () => {
+
+    const params = useParams();
+    const navigate = useNavigate();
+
     const[error, setError] = useState(false);
 
     const[formData, setFormData] = useState({
@@ -12,7 +16,6 @@ const AddProduct = () => {
         company: ""
     })
 
-
     function changeHandler(event)
     {
         setFormData({
@@ -21,7 +24,40 @@ const AddProduct = () => {
         })
     }
 
-    // Add product starts here
+    // getting data which is to be updated
+    useEffect(()=>{
+        getProductDetails();
+    },[])
+
+    async function getProductDetails()
+    {
+        let result = await fetch(`http://localhost:5000/product/${params.id}`);
+
+        result = await result.json();
+
+        // if data not found then go back to home page
+        if(!result.name)
+        {
+            window.alert(result.result)
+            navigate('/')
+        }
+        else // or else fill the formData
+        {
+            console.log(result);
+
+            setFormData({
+                ...formData,
+                name: result.name,
+                price: result.price,
+                category: result.category,
+                userId: result.userId,
+                company: result.company
+            })
+        }
+    }
+
+
+    // now for updating data
     async function submitHandler()
     {
         if(!formData.name || !formData.price || !formData.category || !formData.company){
@@ -29,14 +65,8 @@ const AddProduct = () => {
             return false;
         }
 
-        // assigning userID of formData because it has to be taken from the user loged in info from localStorage
-        const auth = localStorage.getItem('user');
-        formData.userId = JSON.parse(auth)._id;
-        
-        console.log(formData);
-
-        let result = await fetch('http://localhost:5000/add-product', {
-            method: 'post',
+        let result = await fetch(`http://localhost:5000/product/${params.id}`,{
+            method: "put",
             body: JSON.stringify(formData),
             headers: {
                 'Content-Type': 'application/json'
@@ -44,26 +74,15 @@ const AddProduct = () => {
         })
 
         result = await result.json();
-
+        window.alert("Updated successfully")
         console.log(result);
-
-        // clear the form data
-        setFormData({
-            name: "",
-            price: "",
-            category: "",
-            userId: "",
-            company: ""
-        })
-
-        setError(false);
-
-        window.alert("product added successfully")
+        navigate('/');
     }
+
 
     return (
         <div className='product'>
-            <h1>Add Product</h1>
+            <h1>Update Product</h1>
 
             <input type='text' className='inputBox' placeholder='Enter product name'
                 name='name'
@@ -101,10 +120,10 @@ const AddProduct = () => {
                 <span className='invalid-input'>Enter valid company</span>
             }
 
-            <button type='button' onClick={submitHandler}>Add Product</button>
+            <button type='button' onClick={submitHandler}>Update Product</button>
 
         </div>
     )
 }
 
-export default AddProduct
+export default UpdateProduct

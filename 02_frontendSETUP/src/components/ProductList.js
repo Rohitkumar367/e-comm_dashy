@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 
 const ProductList = () => {
     const[products, setProducts] = useState([]);
@@ -7,7 +8,8 @@ const ProductList = () => {
         getProducts();
     },[])
 
-    const getProducts= async ()=>{
+    // get products start here
+    const getProducts = async ()=>{
         let result = await fetch('http://localhost:5000/products');
 
         result = await result.json();
@@ -17,8 +19,14 @@ const ProductList = () => {
 
     console.log(products);
 
+    // delete product start here
     const deleteProduct = async (id)=>{
+        const confimation = window.confirm("Are you sure you want to delete this product?");
+
+        if(!confimation) return;
+
         console.log(id);
+
         let result = await fetch(`http://localhost:5000/product/${id}`,{
             method: "Delete"
         });
@@ -26,7 +34,7 @@ const ProductList = () => {
         result = await result.json();
 
         if(result){
-            window.alert("record is deleted")
+            window.alert("record has deleted successfully")
             getProducts();
         }
 
@@ -47,11 +55,16 @@ const ProductList = () => {
             {
                 products.map((item,index)=>
                     <ul key={item._id}>
-                        <li>{index}</li>
+                        <li>{index+1}</li>
                         <li>{item.name}</li>
                         <li>${item.price}</li>
                         <li>{item.category}</li>
-                        <li><button className='deleteBtn' onClick={()=>deleteProduct(item._id)}>Delete</button></li>
+                        <li>
+                            <button className='alterBtn' onClick={()=>deleteProduct(item._id)}>
+                                Delete
+                            </button>
+                            <Link to={`/update/${item._id}`} className='alterBtn'>Update</Link>
+                        </li>
                     </ul>
                 )
             }
