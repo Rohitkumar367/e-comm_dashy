@@ -41,9 +41,38 @@ const ProductList = () => {
         console.log(result);
     }
 
+    // search product starts here
+    const searchHandler = async (event) =>{
+        let key = event.target.value;
+        console.log(key);
+
+        if(key) // if key is not empty then get specific product
+        {
+            let result = await fetch(`http://localhost:5000/search/${key}`);
+    
+            result = await result.json();
+    
+            if(result)
+            {
+                setProducts(result)
+            }
+        }
+        else // if key is empty then get all product
+        {
+            getProducts();
+        }
+    }
+
     return (
         <div className='product-list'>
             <h1>Product List</h1>
+
+            <input className='search-product-box' 
+                type='text' 
+                placeholder='Search Product'
+                onChange={searchHandler}
+            />
+
             <ul>
                 <li>S. No</li>
                 <li>Name</li>
@@ -53,7 +82,7 @@ const ProductList = () => {
             </ul>
 
             {
-                products.map((item,index)=>
+                products.length>0 ? products.map((item,index)=>
                     <ul key={item._id}>
                         <li>{index+1}</li>
                         <li>{item.name}</li>
@@ -67,6 +96,7 @@ const ProductList = () => {
                         </li>
                     </ul>
                 )
+                : <h1>No Result Found</h1>
             }
         </div>
     )

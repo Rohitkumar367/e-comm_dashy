@@ -29,7 +29,7 @@ app.get('/', (req, resp) => {
 })
 
 
-// for signup
+// for signup, we are going to save() new user in our database w.r.t the req.body passed using post request
 app.post('/register', async (req, res) => {
 
     let user = new User(req.body);// to save new data to database we first pass it to the User model so that the input matches to the defined User's schema, this prevent invalid data or any extra field from being stored in the database.
@@ -48,7 +48,7 @@ app.post('/register', async (req, res) => {
 })
 
 
-// for login
+// for login, we are going to strict find() a specific user in our database w.r.t the req.body passed using post request
 app.post('/login', async (req, resp) => {
     // to check user has sent both password and email
     if(req.body.password && req.body.email){
@@ -69,7 +69,7 @@ app.post('/login', async (req, resp) => {
 })
 
 
-// to add product in database
+// to add product in database, adding product means saving data in database, so we are going to save() new product in our database w.r.t the req.body passed using post request
 app.post('/add-product', async(req, resp) => {
 
     let product = new Product(req.body);
@@ -82,7 +82,7 @@ app.post('/add-product', async(req, resp) => {
 })
 
 
-// to get all the products from database
+// to get all the products from database, we are going to find() all products from our database using get request
 app.get("/products", async (req, resp)=>{
 
     let products = await Product.find();
@@ -96,7 +96,7 @@ app.get("/products", async (req, resp)=>{
 })
 
 
-// to delete product
+// to delete product, we are going to strictly delete a specefic product from our database w.r.t id passed in url using delete request
 app.delete('/product/:id', async (req, resp)=>{
     const result = await Product.deleteOne({_id: req.params.id});
     resp.send(result);
@@ -104,7 +104,7 @@ app.delete('/product/:id', async (req, resp)=>{
 })
 
 
-// to update product, first we need to get the details of particular id's product
+// to update product, first we need to get the details of particular id's product, so we are going to strict find() a specific product from our database w.r.t the id passed in url using get request
 app.get("/product/:id", async (req, resp)=> {
     try{
         let result = await Product.findOne({_id: req.params.id});
@@ -123,7 +123,7 @@ app.get("/product/:id", async (req, resp)=> {
 })
 
 
-// now to update the product
+// now to update the product, we are going to strict update a specific product in our database w.r.t the id passed in url using put request
 app.put('/product/:id', async (req, resp)=>{
     let result = await Product.updateOne(
         {_id: req.params.id},
@@ -135,6 +135,23 @@ app.put('/product/:id', async (req, resp)=>{
     resp.send(result);
 })
 
+
+// search router, we are going to regex find() our data from the database w.r.t the key passed in the url using get request
+app.get("/search/:key", async (req, resp) => {
+    // we are using regex search instead of find({name: req.params.key}) because find() is a strict search, it searches for exact match. But regex allows flexible search, it can search a subString also.
+    let result = await Product.find(
+        {
+            //-> $or is the operator which is going to search the data from the mongodb database that satisfy at least one of the below conditions
+            "$or": [
+                //-> the $regex operator is used to search for string that matches with  the req.params.key as a whole string or substring also.
+                {name: {$regex: req.params.key}},
+                {company: {$regex: req.params.key}},
+                {category: {$regex: req.params.key}}
+            ]
+        }
+    );
+    resp.send(result);
+})
 
 app.listen(5000, () => {
     console.log('Backend Server is running at:-- http://localhost:5000')

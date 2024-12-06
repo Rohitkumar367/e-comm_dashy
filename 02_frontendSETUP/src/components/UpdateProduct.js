@@ -58,7 +58,7 @@ const UpdateProduct = () => {
     }
 
 
-    // and now put req
+    // and now put req i.e,. update
     async function submitHandler()
     {
         if(!formData.name || !formData.price || !formData.category || !formData.company){

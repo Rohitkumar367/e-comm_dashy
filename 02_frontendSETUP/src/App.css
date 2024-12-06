@@ -184,6 +184,14 @@ button:hover{
   margin-top: 50px;
 }
 
+.product-list .search-product-box{
+  width: 400px;
+  margin: 20px;
+  height: 40px;
+  border: 1px solid skyblue;
+  padding-left: 20px;
+}
+
 .product-list ul li{
   display: inline-block;
   border: 1px solid skyblue;
