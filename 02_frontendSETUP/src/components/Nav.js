@@ -23,9 +23,9 @@ const Nav = () =>{
         {/* if user is not signed up or loged in then only sign up and login link will be showed */}
         { auth ?
             <ul className='nav-ul'>
-                <li><Link to="/">Products</Link></li>
+                <li><Link to="/">Home</Link></li>
+                <li><Link to={`/products/${JSON.parse(auth)._id}`}>Products</Link></li>
                 <li><Link to="/add">Add Product</Link></li>
-                <li><Link to="/update">Update Product</Link></li>
                 <li><Link to="/profile">Profile</Link></li>
 
                 {/* JSON.parse() converts json string into a javacript object */}

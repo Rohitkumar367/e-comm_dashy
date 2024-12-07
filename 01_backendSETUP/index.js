@@ -69,7 +69,7 @@ app.post('/login', async (req, resp) => {
 })
 
 
-// to add product in database, adding product means saving data in database, so we are going to save() new product in our database w.r.t the req.body passed using post request
+// to add product in database, adding product means saving data in database, so we are going to save() new product in our database w.r.t the req.body passed using post request just like we did for signup page
 app.post('/add-product', async(req, resp) => {
 
     let product = new Product(req.body);
@@ -82,10 +82,10 @@ app.post('/add-product', async(req, resp) => {
 })
 
 
-// to get all the products from database, we are going to find() all products from our database using get request
-app.get("/products", async (req, resp)=>{
+// to get all the products from database, we are going to strict find() user specific products from our database using get request
+app.get("/products/:userID", async (req, resp)=>{
 
-    let products = await Product.find();
+    let products = await Product.find({userId: req.params.userID});
 
     if(products.length>0){
         resp.send(products);

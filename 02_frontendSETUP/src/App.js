@@ -9,6 +9,7 @@ import Login from './components/Login'
 import AddProduct from './components/AddProduct'
 import ProductList from './components/ProductList'
 import UpdateProduct from './components/UpdateProduct'
+import Home from './components/Home'
 
 const App = () => {
   return (
@@ -21,7 +22,8 @@ const App = () => {
 
           {/* All other route are inside PrivateComponent, to ensure that the user must be signup to view these content */}
           <Route element={<PrivateComponent/>}>
-            <Route path="/" element={<ProductList/>}/>
+            <Route path="/" element={<Home/>}/>
+            <Route path="/products/:id" element={<ProductList/>}/>
             <Route path="/add" element={<AddProduct/>}/>
             <Route path="/update/:id" element={<UpdateProduct/>}/>
             <Route path="/logout" element={<h1>Logout Product Component</h1>}/>

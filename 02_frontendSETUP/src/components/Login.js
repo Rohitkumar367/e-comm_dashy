@@ -33,7 +33,7 @@ const Login = () => {
     {
         console.log(formData)
 
-        // POST request to the backend API(5000/register) using fetch API
+        // POST request to the backend API(5000/login) using fetch API
         // fetch() function, which is used to make an HTTP request from the client to the server
         let result = await fetch('http://localhost:5000/login', {
             method: 'post',

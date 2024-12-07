@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 const ProductList = () => {
     const[products, setProducts] = useState([]);
+    const params = useParams();
 
     useEffect(()=>{
         getProducts();
@@ -10,7 +11,7 @@ const ProductList = () => {
 
     // get products start here
     const getProducts = async ()=>{
-        let result = await fetch('http://localhost:5000/products');
+        let result = await fetch(`http://localhost:5000/products/${params.id}`);
 
         result = await result.json();
 
