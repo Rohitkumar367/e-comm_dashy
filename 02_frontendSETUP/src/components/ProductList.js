@@ -11,7 +11,12 @@ const ProductList = () => {
 
     // get products start here
     const getProducts = async ()=>{
-        let result = await fetch(`http://localhost:5000/products/${params.id}`);
+        // we use headers to send jwt token
+        let result = await fetch(`http://localhost:5000/products/${params.id}`,{
+            headers:{
+                authorization: JSON.parse(localStorage.getItem('token'))
+            }
+        });
 
         result = await result.json();
 

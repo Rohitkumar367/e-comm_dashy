@@ -29,6 +29,7 @@ const Login = () => {
     })
 
 
+    // post req to get user starts inside this submit handler function
     async function submitHandler()
     {
         console.log(formData)
@@ -48,9 +49,10 @@ const Login = () => {
 
         console.log(result)
 
-        if(result.name)
+        if(result.auth)
         {
-            localStorage.setItem('user', JSON.stringify(result));
+            localStorage.setItem('user', JSON.stringify(result.user));
+            localStorage.setItem('token', JSON.stringify(result.auth));
             navigate('/')
         }
         else

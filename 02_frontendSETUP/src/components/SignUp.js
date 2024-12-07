@@ -27,6 +27,8 @@ const SignUp = () => {
         }
     })
 
+    
+    // post req to save new user starts inside this submitHandler
     async function submitHandler()
     {
         console.log(formData);
@@ -47,7 +49,8 @@ const SignUp = () => {
         console.log(result)
 
         // storing the user signed up data into local storage in JSON-formatting string with key-value pair
-        localStorage.setItem("user", JSON.stringify(result))
+        localStorage.setItem("user", JSON.stringify(result.result))
+        localStorage.setItem("token", JSON.stringify(result.auth))
 
         if(result) navigate('/');
     }

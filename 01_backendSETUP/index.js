@@ -3,6 +3,9 @@
 const express = require('express');
 const app = express();
 
+const Jwt = require('jsonwebtoken')
+const jwtKey='e-comm';// this one is secret and kept inside .env file
+
 // Imprts CORS(cross-origin resource sharing) middleware, which allows your server to handle cross-origin requests (e.g., from a frontend running on a different port or domain).
 const cors = require('cors')
 
@@ -30,7 +33,7 @@ app.get('/', (req, resp) => {
 
 
 // for signup, we are going to save() new user in our database w.r.t the req.body passed using post request
-app.post('/register', async (req, res) => {
+app.post('/register', async (req, resp) => {
 
     let user = new User(req.body);// to save new data to database we first pass it to the User model so that the input matches to the defined User's schema, this prevent invalid data or any extra field from being stored in the database.
 
@@ -43,8 +46,14 @@ app.post('/register', async (req, res) => {
 
     console.log(result);
 
-    // sending result to client
-    res.send(result)
+    // sending result to client and sending jwt token as well
+    Jwt.sign({result},jwtKey,{expiresIn:"2h"},(err, token)=>{
+        if(err)
+        {
+            resp.send({result: "something went wrong, please try after some time"})
+        }
+        resp.send({result, auth: token})
+    })
 })
 
 
@@ -56,7 +65,14 @@ app.post('/login', async (req, resp) => {
 
         if(user){
             console.log(user);
-            resp.send(user);
+            // sending jwt token as well
+            Jwt.sign({user},jwtKey,{expiresIn:"2h"},(err, token)=>{
+                if(err)
+                {
+                    resp.send({result: "something went wrong, please try after some time"})
+                }
+                resp.send({user, auth: token})
+            })
         }
         else{
             resp.send({ result: 'no user found' })
