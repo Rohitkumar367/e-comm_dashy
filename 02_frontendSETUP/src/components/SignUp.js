@@ -50,6 +50,7 @@ const SignUp = () => {
 
         // storing the user signed up data into local storage in JSON-formatting string with key-value pair
         localStorage.setItem("user", JSON.stringify(result.result))
+        // storting the jwt token created by node js in JSON-formatting string with key-value pair
         localStorage.setItem("token", JSON.stringify(result.auth))
 
         if(result) navigate('/');

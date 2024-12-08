@@ -14,7 +14,7 @@ const ProductList = () => {
         // we use headers to send jwt token
         let result = await fetch(`http://localhost:5000/products/${params.id}`,{
             headers:{
-                authorization: JSON.parse(localStorage.getItem('token'))
+                authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
             }
         });
 
@@ -34,7 +34,10 @@ const ProductList = () => {
         console.log(id);
 
         let result = await fetch(`http://localhost:5000/product/${id}`,{
-            method: "Delete"
+            method: "Delete",
+            headers:{
+                authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+            }
         });
 
         result = await result.json();
@@ -54,7 +57,11 @@ const ProductList = () => {
 
         if(key) // if key is not empty then get specific product
         {
-            let result = await fetch(`http://localhost:5000/search/${key}`);
+            let result = await fetch(`http://localhost:5000/search/${key}`,{
+                headers:{
+                    authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+                }
+            });
     
             result = await result.json();
     

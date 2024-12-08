@@ -86,7 +86,7 @@ app.post('/login', async (req, resp) => {
 
 
 // to add product in database, adding product means saving data in database, so we are going to save() new product in our database w.r.t the req.body passed using post request just like we did for signup page
-app.post('/add-product', async(req, resp) => {
+app.post('/add-product', verifyToken, async(req, resp) => {
 
     let product = new Product(req.body);
 
@@ -99,7 +99,7 @@ app.post('/add-product', async(req, resp) => {
 
 
 // to get all the products from database, we are going to strict find() user specific products from our database using get request
-app.get("/products/:userID", async (req, resp)=>{
+app.get("/products/:userID", verifyToken, async (req, resp)=>{
 
     let products = await Product.find({userId: req.params.userID});
 
@@ -113,7 +113,7 @@ app.get("/products/:userID", async (req, resp)=>{
 
 
 // to delete product, we are going to strictly delete a specefic product from our database w.r.t id passed in url using delete request
-app.delete('/product/:id', async (req, resp)=>{
+app.delete('/product/:id', verifyToken, async (req, resp)=>{
     const result = await Product.deleteOne({_id: req.params.id});
     resp.send(result);
     console.log(result);
@@ -121,7 +121,7 @@ app.delete('/product/:id', async (req, resp)=>{
 
 
 // to update product, first we need to get the details of particular id's product, so we are going to strict find() a specific product from our database w.r.t the id passed in url using get request
-app.get("/product/:id", async (req, resp)=> {
+app.get("/product/:id", verifyToken, async (req, resp)=> {
     try{
         let result = await Product.findOne({_id: req.params.id});
     
@@ -140,7 +140,7 @@ app.get("/product/:id", async (req, resp)=> {
 
 
 // now to update the product, we are going to strict update a specific product in our database w.r.t the id passed in url using put request
-app.put('/product/:id', async (req, resp)=>{
+app.put('/product/:id', verifyToken, async (req, resp)=>{
     let result = await Product.updateOne(
         {_id: req.params.id},
         {
@@ -153,7 +153,7 @@ app.put('/product/:id', async (req, resp)=>{
 
 
 // search router, we are going to regex find() our data from the database w.r.t the key passed in the url using get request
-app.get("/search/:key", async (req, resp) => {
+app.get("/search/:key", verifyToken, async (req, resp) => {
     // we are using regex search instead of find({name: req.params.key}) because find() is a strict search, it searches for exact match. But regex allows flexible search, it can search a subString also.
     let result = await Product.find(
         {
@@ -168,6 +168,26 @@ app.get("/search/:key", async (req, resp) => {
     );
     resp.send(result);
 })
+
+// token verification middleware function
+function verifyToken(req, resp, next)
+{
+    let token = req.headers['authorization'];
+    if(token)
+    {
+        token = token.split(' ')[1];
+        Jwt.verify(token, jwtKey, (err, valid)=>{
+            if(err){                
+                resp.status(401).send({result: "Please provide valid token"});
+            }else{
+                next();
+            }
+        })
+    }else{
+        resp.status(403).send({result: "Please add token with header"});
+    }
+}
+
 
 app.listen(5000, () => {
     console.log('Backend Server is running at:-- http://localhost:5000')

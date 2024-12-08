@@ -32,7 +32,11 @@ const UpdateProduct = () => {
     // first get request
     async function getProductDetails()
     {
-        let result = await fetch(`http://localhost:5000/product/${params.id}`);
+        let result = await fetch(`http://localhost:5000/product/${params.id}`, {
+            headers:{
+                authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+            }
+        });
 
         result = await result.json();
 
@@ -70,8 +74,9 @@ const UpdateProduct = () => {
             method: "put",
             body: JSON.stringify(formData),
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+                authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+            },
         })
 
         result = await result.json();

@@ -39,13 +39,15 @@ const AddProduct = () => {
             method: 'post',
             body: JSON.stringify(formData),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
             }
         })
 
         result = await result.json();
 
         console.log(result);
+        window.alert("product added successfully")
 
         // clear the form data
         setFormData({
@@ -56,7 +58,6 @@ const AddProduct = () => {
             company: ""
         })
         setError(false);
-        window.alert("product added successfully")
     }
 
     return (

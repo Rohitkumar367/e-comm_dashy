@@ -51,7 +51,9 @@ const Login = () => {
 
         if(result.auth)
         {
+            // storing the users data in locatStorage
             localStorage.setItem('user', JSON.stringify(result.user));
+            // storing the users jwtToken in locatStorage
             localStorage.setItem('token', JSON.stringify(result.auth));
             navigate('/')
         }
